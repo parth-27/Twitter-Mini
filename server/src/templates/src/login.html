@@ -1,0 +1,13 @@
+{% extends "src/header.html" %}
+
+{% block content %}
+
+    <form method = 'Post'>
+        {% csrf_token %}    <!--add this to protect from the token-->
+        {{form.as_p}} <!-- passing html form to django -->
+
+        <button class="btn" style="background-color: green" type="submit"><strong>Login</strong></button>
+    
+    </form>
+    If you don't already have an account, <a href="/register"><strong>Register</strong></a> instead.
+{% endblock %}
