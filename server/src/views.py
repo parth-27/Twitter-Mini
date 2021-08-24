@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout,authenticate   
 from .forms import NewUserForm  
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -29,7 +30,7 @@ def login_request(request):
             if user is not None:
                 login(request,user)
                 messages.info(request,f'You are now logged in as {username}')
-                return redirect("/")   # redirect to the same page.
+                return redirect("/user")   # redirect to the same page.
             else:
                 messages.error(request,"Invalid username or password")
         else:        
@@ -57,3 +58,12 @@ def register(request):
     form = NewUserForm
     return render(request = request,template_name = 'src/register.html',context={"form":form})
 
+
+def SearchView(request):
+    if request.method == 'POST':
+        search_user = request.POST.get('search')
+        results = User.objects.filter(username__contains=search_user)
+        context = {
+            'results':results
+        }
+        return render(request, 'src/search_result.html', context)
